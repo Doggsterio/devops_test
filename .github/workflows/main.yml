@@ -14,13 +14,13 @@ jobs:
       - uses: actions/checkout@v3
     
       - name: Build_test_file
-        run: g++ test.cpp -o app
+        run: g++ test.cpp -o app_ubuntu
         
       - name: Upload_Areifacts
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: app
+          path: app_ubuntu
           retention-days: 1
           
   build_windows:
@@ -28,11 +28,11 @@ jobs:
     
     steps:
       - name: Build_test_file_1
-        run: cl test.cpp
+        run: gcc test.cpp -o app_windows
         
       - name: Upload_Areifacts
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: app_1
+          path: app_windows
           retention-days: 1
