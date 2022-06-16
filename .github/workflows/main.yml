@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_ubuntu:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,4 +21,18 @@ jobs:
         with:
           name: my-artifact
           path: app
+          retention-days: 1
+          
+  build_windows:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Build_test_file_1
+        run: cl test.cpp
+        
+      - name: Upload_Areifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: app_1
           retention-days: 1
