@@ -27,8 +27,10 @@ jobs:
     runs-on: windows-latest
     
     steps:
+      - uses: actions/checkout@v3
+    
       - name: Build_test_file_1
-        run: gcc test.cpp -o app_windows
+        run: gcc ./test.cpp
         
       - name: Upload_Areifacts
         uses: actions/upload-artifact@v3
