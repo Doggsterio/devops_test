@@ -8,12 +8,16 @@ on:
     
   workflow_dispatch:
 
-env:
-  app_name: app_${{ github.run_number }}
-
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build_matrix:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+      
+    runs-on: ${{ matrix.os }}
+    
+    env:
+      app_name: app_${{ matrix.os }}_${{ github.ref_name }}_${{ github.run_number }}
     
     steps:
       - uses: actions/checkout@v3
