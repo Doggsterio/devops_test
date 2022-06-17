@@ -25,13 +25,28 @@ jobs:
       - name: Build_test_file
         run: g++ test.cpp -o ${{ env.app_name }}
         
-      - name: Upload_Areifacts
-        uses: actions/upload-artifact@v3
+  send_to_tg:
+      needs: build_matrix
+      runs-on: ubuntu-latest
+      
+      env:
+        app_name: app_${{ github.ref_name }}_${{ github.run_number }}
+      
+      steps: 
+      - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
           path: ${{ env.app_name }}
           retention-days: 10
-          
+      
+      - name: if_something_wrong
+        if: ${{ failure() }}
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: App build was wrong
+      
       - name: Send_to_Telegramm
         uses: appleboy/telegram-action@master
         with:
