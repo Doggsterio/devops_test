@@ -25,6 +25,13 @@ jobs:
       - name: Build_test_file
         run: g++ test.cpp -o ${{ env.app_name }}
         
+      - name: Upload_artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: ${{ env.app_name }}**
+          retention-days: 10
+        
   send_to_tg:
       needs: build_matrix
       runs-on: ubuntu-latest
@@ -37,8 +44,7 @@ jobs:
         with:
           name: my-artifact
           path: my-artifact
-          retention-days: 10
-      
+        
       - name: if_something_wrong
         if: ${{ failure() }}
         uses: appleboy/telegram-action@master
