@@ -8,30 +8,24 @@ on:
     
   workflow_dispatch:
 
+env:
+  app_name: app_${{ github.run_number }}_${{ githib.ref_name }}
 
 jobs:
-
-  build_matrix:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-      
-    runs-on: ${{ matrix.os }}
+  build:
+    runs-on: ubuntu-latest
     
-    env:
-      app_name: app_${{ matrix.os }}_${{ github.run_number }}
-      
     steps:
       - uses: actions/checkout@v3
     
       - name: Build_test_file
-        run: g++ test.cpp -o ${{ env.app_name }}
+        run: g++ test.cpp -o ${{ env.app_name }}_${{ matrix.os }}
         
       - name: Upload_Areifacts
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: ${{ env.app_name }}**
+          path: ${{ env.app_name }}_${{ matrix.os }}
           retention-days: 10
           
       - name: Send_to_Telegramm
@@ -39,5 +33,5 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: There was a ${{ github.event_name }} in the repository ${{ github.repository }}
-          document: ${{ env.app_name }}
+          message: There was a ${{ github.event_name }} by ${{ github.actor }} in the repository ${{ github.repository }}
+          document: ${{ env.app_name }}_${{ matrix.os }}
