@@ -3,6 +3,9 @@ name: main
 on:
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
   workflow_dispatch:
 
 
@@ -30,3 +33,11 @@ jobs:
           name: my-artifact
           path: ${{ env.app_name }}**
           retention-days: 10
+          
+      - name: Send_to_Telegramm
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          message: There was a ${{ github.event_name }} in the repository ${{ github.repository }}
+          document: ${{ env.app_name }}
