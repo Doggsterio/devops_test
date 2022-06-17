@@ -36,7 +36,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
-          path: ${{ env.app_name }}
+          path: my-artifact
           retention-days: 10
       
       - name: if_something_wrong
@@ -55,4 +55,4 @@ jobs:
           message: |
             There was a ${{ github.event_name }} by ${{ github.actor }} 
             in the repository ${{ github.repository }}
-          document: ${{ env.app_name }}
+          document: my-artifact/**
