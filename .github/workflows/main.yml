@@ -43,21 +43,16 @@ jobs:
         with:
           name: my-artifact
           path: my-artifact
-        
-      - name: if_something_wrong
-        if: ${{ failure() }}
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_CHANNEL_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          message: App build was wrong
-      
+             
       - name: Send_to_Telegramm
+        if: ${{ always() }}
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_CHANNEL_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           message: |
-            There was a ${{ github.event_name }} by ${{ github.actor }} 
-            in the repository ${{ github.repository }}
+            ${{ github.actor }} created ${{ github.event_name }}:
+            Commit message: ${{ github.event.commits[0].message }}
+            Repository: ${{ github.repository }}
+            Status: ${{ job.status }}
           document: my-artifact/**
