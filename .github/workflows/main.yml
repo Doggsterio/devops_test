@@ -33,6 +33,7 @@ jobs:
           retention-days: 10
         
   send_to_tg:
+      needs: build_matrix
       runs-on: ubuntu-latest
       
       env:
